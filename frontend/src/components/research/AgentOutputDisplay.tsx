@@ -14,26 +14,26 @@ interface AgentOutputDisplayProps {
 
 export const AgentOutputDisplay = ({ currentStep, stepData }: AgentOutputDisplayProps) => {
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-4">
+    <div className="w-full max-w-5xl mx-auto space-y-5 px-6">
       {/* Step 1: Question Agent */}
       {currentStep >= 0 && stepData.causalQuestion && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg p-4"
+          className="bg-background/70 backdrop-blur-md border border-border/60 rounded-xl p-6 shadow-lg"
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <FileText className="w-5 h-5 text-primary" />
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <FileText className="w-6 h-6 text-primary" />
               </div>
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-sm">Question Agent Output</h3>
-                {currentStep > 0 && <CheckCircle className="w-4 h-4 text-green-500" />}
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="font-semibold text-base">Question Agent Output</h3>
+                {currentStep > 0 && <CheckCircle className="w-5 h-5 text-green-500" />}
               </div>
-              <div className="text-sm text-muted-foreground space-y-2">
+              <div className="text-sm text-muted-foreground space-y-3">
                 <p className="font-medium text-foreground">Causal Question:</p>
                 <p className="text-xs leading-relaxed">{stepData.causalQuestion.question}</p>
                 {stepData.causalQuestion.pico && (
@@ -63,18 +63,18 @@ export const AgentOutputDisplay = ({ currentStep, stepData }: AgentOutputDisplay
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg p-4"
+          className="bg-background/70 backdrop-blur-md border border-border/60 rounded-xl p-6 shadow-lg"
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
-                <FileText className="w-5 h-5 text-blue-500" />
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <FileText className="w-6 h-6 text-blue-500" />
               </div>
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-sm">Design Agent Output</h3>
-                {currentStep > 1 && <CheckCircle className="w-4 h-4 text-green-500" />}
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="font-semibold text-base">Design Agent Output</h3>
+                {currentStep > 1 && <CheckCircle className="w-5 h-5 text-green-500" />}
               </div>
               <div className="text-sm text-muted-foreground space-y-2">
                 <div className="flex items-center gap-4 text-xs">
@@ -98,18 +98,18 @@ export const AgentOutputDisplay = ({ currentStep, stepData }: AgentOutputDisplay
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg p-4"
+          className="bg-background/70 backdrop-blur-md border border-border/60 rounded-xl p-6 shadow-lg"
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
-                <Shield className="w-5 h-5 text-green-500" />
+              <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
+                <Shield className="w-6 h-6 text-green-500" />
               </div>
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-sm">Validator Agent Output</h3>
-                {currentStep > 2 && <CheckCircle className="w-4 h-4 text-green-500" />}
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="font-semibold text-base">Validator Agent Output</h3>
+                {currentStep > 2 && <CheckCircle className="w-5 h-5 text-green-500" />}
               </div>
               <div className="text-sm text-muted-foreground space-y-2">
                 <div className="flex items-center gap-4 text-xs">
@@ -134,18 +134,18 @@ export const AgentOutputDisplay = ({ currentStep, stepData }: AgentOutputDisplay
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg p-4"
+          className="bg-background/70 backdrop-blur-md border border-border/60 rounded-xl p-6 shadow-lg"
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                <Database className="w-5 h-5 text-purple-500" />
+              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <Database className="w-6 h-6 text-purple-500" />
               </div>
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-sm">OMOP Agent Output</h3>
-                {currentStep > 3 && <CheckCircle className="w-4 h-4 text-green-500" />}
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="font-semibold text-base">OMOP Agent Output</h3>
+                {currentStep > 3 && <CheckCircle className="w-5 h-5 text-green-500" />}
               </div>
               <div className="text-sm text-muted-foreground space-y-2">
                 <div className="flex items-center gap-4 text-xs">
@@ -168,18 +168,18 @@ export const AgentOutputDisplay = ({ currentStep, stepData }: AgentOutputDisplay
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg p-4"
+          className="bg-background/70 backdrop-blur-md border border-border/60 rounded-xl p-6 shadow-lg"
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center">
-                <Code className="w-5 h-5 text-orange-500" />
+              <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
+                <Code className="w-6 h-6 text-orange-500" />
               </div>
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-sm">Code Agent Output</h3>
-                <CheckCircle className="w-4 h-4 text-green-500" />
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="font-semibold text-base">Code Agent Output</h3>
+                <CheckCircle className="w-5 h-5 text-green-500" />
               </div>
               <div className="text-sm text-muted-foreground space-y-2">
                 <div className="flex items-center gap-4 text-xs">
