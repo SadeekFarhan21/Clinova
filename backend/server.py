@@ -25,7 +25,7 @@ app = FastAPI(
 # Configure CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite default port
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:8080"],  # Vite ports
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -188,6 +188,51 @@ async def delete_trial(run_id: str):
 
     del run_status[run_id]
     return {"message": f"Trial {run_id} deleted successfully"}
+
+
+@app.get("/api/examples")
+async def get_example_trials():
+    """Get list of example trials with their data"""
+    examples_dir = Path(__file__).parent / "run" / "example-for-website"
+
+    if not examples_dir.exists():
+        return []
+
+    examples = []
+    for trial_dir in examples_dir.iterdir():
+        if not trial_dir.is_dir():
+            continue
+
+        # Look for JSON file
+        json_files = list(trial_dir.glob("*.json"))
+        if not json_files:
+            continue
+
+        json_file = json_files[0]
+
+        try:
+            with open(json_file, 'r') as f:
+                trial_data = json.load(f)
+
+            # Read Python code if exists
+            code_file = trial_dir / "trial_code.py"
+            code = code_file.read_text() if code_file.exists() else None
+
+            # Get image files
+            images = [img.name for img in trial_dir.glob("*.png")]
+
+            examples.append({
+                "id": trial_dir.name,
+                "name": trial_data.get("trial_config", {}).get("trial_name", trial_dir.name),
+                "data": trial_data,
+                "code": code,
+                "images": images
+            })
+        except Exception as e:
+            print(f"Error loading {trial_dir.name}: {e}")
+            continue
+
+    return examples
 
 
 if __name__ == "__main__":

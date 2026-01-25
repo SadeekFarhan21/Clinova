@@ -22,7 +22,8 @@ import { ResultsDashboard } from "@/components/research/ResultsDashboard";
 import { RoadmapStubs } from "@/components/research/RoadmapStubs";
 
 import { supabase } from "@/integrations/supabase/client";
-import { createTrial, getTrialStatus, getTrialResults } from "@/lib/api";
+import { createTrial, getTrialStatus, getTrialResults, getExampleTrials } from "@/lib/api";
+import { transformTrialDataForDashboard } from "@/lib/transform-trial-data";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
@@ -87,6 +88,7 @@ const Canvas = () => {
   const [researchResultsData, setResearchResultsData] = useState<any>(null);
   const [currentRunId, setCurrentRunId] = useState<string | null>(null);
   const [generatedCode, setGeneratedCode] = useState<string>("");
+  const [startTime, setStartTime] = useState<number | null>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -164,14 +166,31 @@ const Canvas = () => {
       const status = await getTrialStatus(runId);
 
       // Update agent steps based on backend progress
-      // The backend doesn't expose granular step progress, so we simulate it based on overall status
       if (status.status === "running") {
-        // Agents are working - we'll show progress based on elapsed time
-        // For now, just show all as active
-        setAgentSteps(prev => prev.map(step => ({
-          ...step,
-          status: "active"
-        })));
+        // Show sequential agent progress based on elapsed time
+        const elapsed = startTime ? (Date.now() - startTime) / 1000 : 0;
+
+        // Estimated timings for each agent (in seconds)
+        // Question: 0-30s, Design: 30-60s, Validator: 60-80s, OMOP: 80-85s, Code: 85-120s
+        setAgentSteps(prev => prev.map((step, idx) => {
+          if (idx === 0) {
+            // Question agent - first 30 seconds
+            return { ...step, status: elapsed < 30 ? "active" : "complete" };
+          } else if (idx === 1) {
+            // Design agent - 30-60 seconds
+            return { ...step, status: elapsed < 30 ? "pending" : elapsed < 60 ? "active" : "complete" };
+          } else if (idx === 2) {
+            // Validator agent - 60-80 seconds
+            return { ...step, status: elapsed < 60 ? "pending" : elapsed < 80 ? "active" : "complete" };
+          } else if (idx === 3) {
+            // OMOP agent - 80-85 seconds
+            return { ...step, status: elapsed < 80 ? "pending" : elapsed < 85 ? "active" : "complete" };
+          } else if (idx === 4) {
+            // Code agent - 85+ seconds
+            return { ...step, status: elapsed < 85 ? "pending" : "active" };
+          }
+          return step;
+        }));
       } else if (status.status === "completed") {
         // All agents complete
         setAgentSteps(prev => prev.map(step => ({
@@ -218,8 +237,9 @@ const Canvas = () => {
     setThesis(prompt);
     setCanvasState("research-processing");
 
-    // Reset agent steps
+    // Reset agent steps and start timer
     setAgentSteps(INITIAL_AGENT_STEPS);
+    setStartTime(Date.now());
 
     try {
       // Call backend to create trial
@@ -248,9 +268,36 @@ const Canvas = () => {
     }, 1000);
   }, []);
 
-  const handleDataDrop = useCallback((data: any) => {
-    setResearchResultsData(data);
-    setCanvasState("research-results");
+  const handleDataDrop = useCallback(async (data: any) => {
+    try {
+      // Fetch example trials from backend
+      const examples = await getExampleTrials();
+
+      if (examples.length > 0) {
+        // Use the first example (AKI contrast trial)
+        const example = examples.find((e: any) => e.id === "aki-contrast-trial") || examples[0];
+
+        // Transform the data to match ResultsDashboard format
+        const transformedData = transformTrialDataForDashboard(example.data);
+
+        if (transformedData) {
+          setResearchResultsData(transformedData);
+        } else {
+          // Fallback to provided data
+          setResearchResultsData(data);
+        }
+      } else {
+        // Fallback to provided data
+        setResearchResultsData(data);
+      }
+
+      setCanvasState("research-results");
+    } catch (error) {
+      console.error("Failed to load example data:", error);
+      // Fallback to provided mock data
+      setResearchResultsData(data);
+      setCanvasState("research-results");
+    }
   }, []);
 
   const handleResearchReset = useCallback(() => {
@@ -266,6 +313,7 @@ const Canvas = () => {
     setResearchResultsData(null);
     setCurrentRunId(null);
     setGeneratedCode("");
+    setStartTime(null);
   }, []);
 
   const resetToIdle = () => {
@@ -284,6 +332,7 @@ const Canvas = () => {
     setResearchResultsData(null);
     setCurrentRunId(null);
     setGeneratedCode("");
+    setStartTime(null);
     setButtonsAnimated(true);
   };
 
