@@ -23,13 +23,13 @@ export const ActiveThesisBar = ({ thesis, phase, onReset }: ActiveThesisBarProps
 
   return (
     <motion.div
-      className="mx-4 mt-4"
-      initial={{ opacity: 0, y: -20, height: 0 }}
-      animate={{ opacity: 1, y: 0, height: "auto" }}
-      exit={{ opacity: 0, y: -20, height: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.3 }}
     >
-      <div className="glass-panel px-5 py-3.5 flex items-center gap-4">
+      <div className="glass-panel px-5 py-2.5 flex items-center gap-4 h-[46px]">
         {/* Status icon */}
         <div className="flex-shrink-0">
           {isProcessing ? (

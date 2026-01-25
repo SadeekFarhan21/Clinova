@@ -470,26 +470,6 @@ const Canvas = () => {
         <ThreeBackground />
         <DottedGrid />
 
-        {/* Back button - fixed position below navbar */}
-        <AnimatePresence>
-          {showBackButton && (
-            <motion.button
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
-              onClick={resetToIdle}
-              className="fixed top-20 left-6 z-50 flex items-center gap-2 px-3 py-2 rounded-lg
-                         bg-background/60 backdrop-blur-sm border border-border/50
-                         text-muted-foreground hover:text-foreground hover:bg-background/80
-                         transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm font-medium">Back</span>
-            </motion.button>
-          )}
-        </AnimatePresence>
-
         <div className="relative z-10 h-full flex">
           {/* Left sidebar - Agent Timeline (visible during research processing) */}
           <AnimatePresence>
@@ -498,10 +478,41 @@ const Canvas = () => {
 
           {/* Main content area */}
           <div className="flex-1 flex flex-col">
-            {/* Active Thesis Bar (visible during research after prompt submission) */}
+            {/* Top bar with Back button and Active Thesis Bar */}
             <AnimatePresence>
-              {isResearchState && canvasState !== "research-prompt" && (
-                <ActiveThesisBar thesis={thesis} phase={researchPhase!} onReset={handleResearchReset} />
+              {(showBackButton || (isResearchState && canvasState !== "research-prompt")) && (
+                <motion.div
+                  className="flex items-center gap-3 mx-4 mt-4"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Back Button */}
+                  {showBackButton && (
+                    <motion.button
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      onClick={resetToIdle}
+                      className="flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-lg
+                                 bg-background/60 backdrop-blur-sm border border-border/50
+                                 text-muted-foreground hover:text-foreground hover:bg-background/80
+                                 transition-colors h-[46px]"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      <span className="text-sm font-medium">Back</span>
+                    </motion.button>
+                  )}
+
+                  {/* Active Thesis Bar */}
+                  {isResearchState && canvasState !== "research-prompt" && (
+                    <div className="flex-1">
+                      <ActiveThesisBar thesis={thesis} phase={researchPhase!} onReset={handleResearchReset} />
+                    </div>
+                  )}
+                </motion.div>
               )}
             </AnimatePresence>
 
