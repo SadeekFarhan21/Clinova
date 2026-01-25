@@ -1,0 +1,11 @@
+.env
+node_modules
+dist
+build
+.DS_Store
+Thumbs.db
+*.log
+.vscode
+.idea
+coverage
+frontend/node_modules/.cache/babel-loader/7ccc8b1f890f526c2472412b24d80f59.json

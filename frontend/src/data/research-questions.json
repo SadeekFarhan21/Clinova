@@ -1,0 +1,30 @@
+{
+  "project": "VCT_Research_Tool",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Clinical Policy Impact",
+      "prompt": "What is the causal effect of a policy that administers iodinated contrast to all contrast-indicated patients, compared to a policy of withholding contrast, on short-term acute kidney injury risk?"
+    },
+    {
+      "id": 2,
+      "topic": "Counterfactual Analysis",
+      "prompt": "For patients eligible for contrast-enhanced imaging, how would the probability of acute kidney injury within 7 days differ under the counterfactual scenario of receiving iodinated contrast versus not receiving contrast?"
+    },
+    {
+      "id": 3,
+      "topic": "Causal Effect Measurement",
+      "prompt": "Among contrast-eligible patients at the time of imaging decision, what is the causal effect of choosing iodinated contrast administration (vs. non-contrast imaging) on subsequent acute kidney injury risk within 7 days?"
+    },
+    {
+      "id": 4,
+      "topic": "Clinical Permissibility",
+      "prompt": "In patients for whom contrast-enhanced imaging is clinically permissible, what is the causal effect of iodinated contrast use versus avoidance on near-term acute kidney injury outcomes?"
+    },
+    {
+      "id": 5,
+      "topic": "Diagnostic Yield vs Risk",
+      "prompt": "At the imaging decision point for contrast-eligible patients, how does administering iodinated contrast causally affect diagnostic yield relative to the accompanying short-term risk of acute kidney injury?"
+    }
+  ]
+}
