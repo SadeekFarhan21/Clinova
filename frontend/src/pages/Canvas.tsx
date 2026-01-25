@@ -230,7 +230,7 @@ const Canvas = () => {
       console.error("Failed to poll trial status:", error);
       // Continue polling, don't stop on transient errors
     }
-  }, []);
+  }, [startTime]);
 
   // Research handlers
   const handleResearchPromptSubmit = useCallback(async (prompt: string) => {
@@ -274,14 +274,34 @@ const Canvas = () => {
       const examples = await getExampleTrials();
 
       if (examples.length > 0) {
-        // Use the first example (AKI contrast trial)
-        const example = examples.find((e: any) => e.id === "aki-contrast-trial") || examples[0];
+        // Smart matching: select example based on current research question
+        let example;
+        const questionLower = thesis.toLowerCase();
+
+        if (questionLower.includes('sglt2') || questionLower.includes('heart failure') || questionLower.includes('cardiovascular')) {
+          // For cardiovascular questions, use PREDICT or VALOR trial
+          example = examples.find((e: any) =>
+            e.id === "predict-trial" || e.id === "valor-trial"
+          );
+        } else if (questionLower.includes('contrast') || questionLower.includes('kidney') || questionLower.includes('aki')) {
+          // For kidney/contrast questions, use AKI contrast trial
+          example = examples.find((e: any) => e.id === "aki-contrast-trial");
+        } else if (questionLower.includes('nephric') || questionLower.includes('nephropathy')) {
+          // For nephropathy questions, use NEPHRIC trial
+          example = examples.find((e: any) => e.id === "nephric-trial");
+        }
+
+        // Fallback to first available example
+        if (!example) {
+          example = examples[0];
+        }
 
         // Transform the data to match ResultsDashboard format
         const transformedData = transformTrialDataForDashboard(example.data);
 
         if (transformedData) {
           setResearchResultsData(transformedData);
+          toast.success(`Loaded ${example.data.trial_config?.trial_name || example.id} example data`);
         } else {
           // Fallback to provided data
           setResearchResultsData(data);
@@ -298,7 +318,7 @@ const Canvas = () => {
       setResearchResultsData(data);
       setCanvasState("research-results");
     }
-  }, []);
+  }, [thesis]);
 
   const handleResearchReset = useCallback(() => {
     // Stop polling if active
