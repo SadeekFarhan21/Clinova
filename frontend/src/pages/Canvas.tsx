@@ -20,6 +20,7 @@ import { CodeEditor } from "@/components/research/CodeEditor";
 import { DataDropZone } from "@/components/research/DataDropZone";
 import { ResultsDashboard } from "@/components/research/ResultsDashboard";
 import { RoadmapStubs } from "@/components/research/RoadmapStubs";
+import { AgentOutputDisplay } from "@/components/research/AgentOutputDisplay";
 
 import { supabase } from "@/integrations/supabase/client";
 import { createTrial, getTrialStatus, getTrialResults, getExampleTrials } from "@/lib/api";
@@ -89,6 +90,8 @@ const Canvas = () => {
   const [currentRunId, setCurrentRunId] = useState<string | null>(null);
   const [generatedCode, setGeneratedCode] = useState<string>("");
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [currentAgentStep, setCurrentAgentStep] = useState<number>(-1);
+  const [agentStepData, setAgentStepData] = useState<any>({});
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -159,6 +162,79 @@ const Canvas = () => {
     setAnalysisResult(result);
     setCanvasState("analysis-results");
   };
+
+  // Simulate agent progress with example data
+  const simulateAgentProgress = useCallback((example: any) => {
+    const data = example.data;
+
+    // Agent 1: Question (0-3 seconds)
+    setTimeout(() => {
+      setCurrentAgentStep(0);
+      setAgentStepData((prev: any) => ({
+        ...prev,
+        causalQuestion: data.step1_causal_question
+      }));
+      setAgentSteps(prev => prev.map((step, idx) => ({
+        ...step,
+        status: idx === 0 ? "complete" : idx === 1 ? "active" : "pending"
+      })));
+    }, 3000);
+
+    // Agent 2: Design (3-6 seconds)
+    setTimeout(() => {
+      setCurrentAgentStep(1);
+      setAgentStepData((prev: any) => ({
+        ...prev,
+        designSpec: data.step2a_design_spec
+      }));
+      setAgentSteps(prev => prev.map((step, idx) => ({
+        ...step,
+        status: idx <= 1 ? "complete" : idx === 2 ? "active" : "pending"
+      })));
+    }, 6000);
+
+    // Agent 3: Validator (6-9 seconds)
+    setTimeout(() => {
+      setCurrentAgentStep(2);
+      setAgentStepData((prev: any) => ({
+        ...prev,
+        validation: data.step2b_validation
+      }));
+      setAgentSteps(prev => prev.map((step, idx) => ({
+        ...step,
+        status: idx <= 2 ? "complete" : idx === 3 ? "active" : "pending"
+      })));
+    }, 9000);
+
+    // Agent 4: OMOP (9-11 seconds)
+    setTimeout(() => {
+      setCurrentAgentStep(3);
+      setAgentStepData((prev: any) => ({
+        ...prev,
+        omopMapping: data.step2c_omop_mapping
+      }));
+      setAgentSteps(prev => prev.map((step, idx) => ({
+        ...step,
+        status: idx <= 3 ? "complete" : idx === 4 ? "active" : "pending"
+      })));
+    }, 11000);
+
+    // Agent 5: Code - Complete and show results (11-13 seconds)
+    setTimeout(() => {
+      setCurrentAgentStep(4);
+      setAgentStepData((prev: any) => ({
+        ...prev,
+        code: data.step3_code
+      }));
+      setAgentSteps(prev => prev.map(step => ({
+        ...step,
+        status: "complete"
+      })));
+
+      toast.success(`Loaded ${example.data.trial_config?.trial_name || example.id} example!`);
+      setCanvasState("research-code-ready");
+    }, 13000);
+  }, []);
 
   // Poll backend for trial status and update agent steps
   const pollTrialStatus = useCallback(async (runId: string) => {
@@ -242,25 +318,40 @@ const Canvas = () => {
     setStartTime(Date.now());
 
     try {
-      // Call backend to create trial
-      toast.info("Starting research analysis...");
-      const response = await createTrial({ question: prompt });
-      setCurrentRunId(response.run_id);
+      // Load example trial data directly (skip real backend processing)
+      toast.info("Loading example trial data...");
 
-      // Start polling for status
-      pollingIntervalRef.current = setInterval(() => {
-        pollTrialStatus(response.run_id);
-      }, 2000); // Poll every 2 seconds
+      const examples = await getExampleTrials();
 
-      // Do initial poll immediately
-      pollTrialStatus(response.run_id);
+      // Smart matching: select example based on research question
+      let example;
+      const questionLower = prompt.toLowerCase();
+
+      if (questionLower.includes('sglt2') || questionLower.includes('heart failure') || questionLower.includes('cardiovascular')) {
+        example = examples.find((e: any) => e.id === "predict-trial" || e.id === "valor-trial");
+      } else if (questionLower.includes('contrast') || questionLower.includes('kidney') || questionLower.includes('aki')) {
+        example = examples.find((e: any) => e.id === "aki-contrast-trial");
+      } else if (questionLower.includes('nephric') || questionLower.includes('nephropathy')) {
+        example = examples.find((e: any) => e.id === "nephric-trial");
+      }
+
+      if (!example) {
+        example = examples[0];
+      }
+
+      // Get the code from the example
+      const code = example.code || "# No code available";
+      setGeneratedCode(code);
+
+      // Simulate agent progress with the example data
+      simulateAgentProgress(example);
 
     } catch (error) {
-      console.error("Failed to create trial:", error);
-      toast.error("Failed to start research analysis. Make sure the backend is running.");
+      console.error("Failed to load example trial:", error);
+      toast.error("Failed to load example trial data.");
       setCanvasState("research-prompt");
     }
-  }, [pollTrialStatus]);
+  }, [simulateAgentProgress]);
 
   const handleCodeCopied = useCallback(() => {
     setTimeout(() => {
@@ -334,6 +425,8 @@ const Canvas = () => {
     setCurrentRunId(null);
     setGeneratedCode("");
     setStartTime(null);
+    setCurrentAgentStep(-1);
+    setAgentStepData({});
   }, []);
 
   const resetToIdle = () => {
@@ -353,6 +446,8 @@ const Canvas = () => {
     setCurrentRunId(null);
     setGeneratedCode("");
     setStartTime(null);
+    setCurrentAgentStep(-1);
+    setAgentStepData({});
     setButtonsAnimated(true);
   };
 
@@ -474,7 +569,11 @@ const Canvas = () => {
                     )}
 
                     {canvasState === "research-processing" && (
-                      <SkeletonDashboard key="research-processing" />
+                      <AgentOutputDisplay
+                        key="research-processing"
+                        currentStep={currentAgentStep}
+                        stepData={agentStepData}
+                      />
                     )}
 
                     {canvasState === "research-code-ready" && (
