@@ -21,6 +21,7 @@ import { DataDropZone } from "@/components/research/DataDropZone";
 import { ResultsDashboard } from "@/components/research/ResultsDashboard";
 import { RoadmapStubs } from "@/components/research/RoadmapStubs";
 import { AgentOutputDisplay } from "@/components/research/AgentOutputDisplay";
+import { LogsViewer } from "@/components/canvas/LogsViewer";
 
 import { supabase } from "@/integrations/supabase/client";
 import { createTrial, getTrialStatus, getTrialResults, getExampleTrials } from "@/lib/api";
@@ -93,6 +94,9 @@ const Canvas = () => {
   const [currentAgentStep, setCurrentAgentStep] = useState<number>(-1);
   const [agentStepData, setAgentStepData] = useState<any>({});
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Logs state
+  const [showLogs, setShowLogs] = useState(false);
 
   useEffect(() => {
     if (!hasExistingModels && canvasState === "idle" && !buttonsAnimated) {
@@ -625,6 +629,7 @@ const Canvas = () => {
                             isAnimating={buttonsAnimated}
                             onPatientAnalysis={handlePatientAnalysis}
                             onResearch={handleResearch}
+                            onLogs={() => setShowLogs(true)}
                           />
                         </motion.div>
                       </motion.div>
@@ -638,6 +643,11 @@ const Canvas = () => {
             {canvasState === "research-results" && <RoadmapStubs />}
           </div>
         </div>
+
+        {/* Logs Viewer Modal */}
+        <AnimatePresence>
+          {showLogs && <LogsViewer onClose={() => setShowLogs(false)} />}
+        </AnimatePresence>
       </div>
     </MainLayout>
   );

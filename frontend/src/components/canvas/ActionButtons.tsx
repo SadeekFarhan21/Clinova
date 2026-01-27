@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
-import { FlaskConical, Stethoscope } from "lucide-react";
+import { FlaskConical, Stethoscope, FileText } from "lucide-react";
 
 interface ActionButtonsProps {
   isAnimating: boolean;
   onPatientAnalysis?: () => void;
   onResearch?: () => void;
+  onLogs?: () => void;
 }
 
-export const ActionButtons = ({ isAnimating, onPatientAnalysis, onResearch }: ActionButtonsProps) => {
+export const ActionButtons = ({ isAnimating, onPatientAnalysis, onResearch, onLogs }: ActionButtonsProps) => {
   const animatedPosition = isAnimating 
     ? { x: 0, y: 0 } 
     : { x: 0, y: 0 };
@@ -50,6 +51,19 @@ export const ActionButtons = ({ isAnimating, onPatientAnalysis, onResearch }: Ac
         >
           <Stethoscope className="w-4 h-4" />
           Patient Analysis
+        </motion.button>
+      )}
+
+      {onLogs && (
+        <motion.button
+          onClick={onLogs}
+          className="glass-button flex items-center gap-3"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.2 }}
+        >
+          <FileText className="w-4 h-4" />
+          Logs
         </motion.button>
       )}
     </motion.div>
