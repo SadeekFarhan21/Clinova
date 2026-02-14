@@ -5,7 +5,6 @@ import {
   AlertCircle, CheckCircle, Play 
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
 
 interface Model {
   name: string;
@@ -41,11 +40,7 @@ export const DrugModelSelector = ({ patient, ehrData, onBack, onRunAnalysis }: D
 
   const loadModels = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('run-drug-model', {
-        body: { action: 'listModels' },
-      });
-      if (error) throw error;
-      setModels(data.models || {});
+      setModels({});
     } catch (err: any) {
       setError('Failed to load models');
       console.error(err);
@@ -79,17 +74,7 @@ export const DrugModelSelector = ({ patient, ehrData, onBack, onRunAnalysis }: D
     setError(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('run-drug-model', {
-        body: {
-          action: 'runAnalysis',
-          modelId: selectedModel,
-          ehrData,
-          drugs,
-        },
-      });
-
-      if (error) throw error;
-      onRunAnalysis(drugs, selectedModel, data.result);
+      setError('Drug model analysis not configured');
     } catch (err: any) {
       setError(err.message || 'Analysis failed');
       console.error(err);

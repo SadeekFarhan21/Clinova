@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, User, Calendar, Hash, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
 
 interface Patient {
   id: string;
@@ -29,12 +28,8 @@ export const PatientSearch = ({ onPatientSelect }: PatientSearchProps) => {
     setHasSearched(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('epic-ehr', {
-        body: { action: 'search', searchQuery: query },
-      });
-
-      if (error) throw error;
-      setResults(data.patients || []);
+      console.warn('Patient search not configured');
+      setResults([]);
     } catch (error) {
       console.error('Search error:', error);
       setResults([]);

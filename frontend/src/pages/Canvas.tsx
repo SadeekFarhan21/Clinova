@@ -23,7 +23,6 @@ import { RoadmapStubs } from "@/components/research/RoadmapStubs";
 import { AgentOutputDisplay } from "@/components/research/AgentOutputDisplay";
 import { LogsViewer } from "@/components/canvas/LogsViewer";
 
-import { supabase } from "@/integrations/supabase/client";
 import { createTrial, getTrialStatus, getTrialResults, getExampleTrials } from "@/lib/api";
 import { transformTrialDataForDashboard } from "@/lib/transform-trial-data";
 import { Loader2, ArrowLeft } from "lucide-react";
@@ -149,13 +148,8 @@ const Canvas = () => {
     setCanvasState("ehr-loading");
 
     try {
-      const { data, error } = await supabase.functions.invoke('epic-ehr', {
-        body: { action: 'getEHR', patientId: patient.id },
-      });
-
-      if (error) throw error;
-      setEhrData(data.ehr);
-      setCanvasState("ehr-display");
+      toast.error("EHR integration not configured");
+      setCanvasState("patient-search");
     } catch (err) {
       console.error('Failed to load EHR:', err);
       setCanvasState("patient-search");
