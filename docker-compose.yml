@@ -6,7 +6,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: lepisai-backend
+    container_name: clinova-backend
     ports:
       - "8000:8000"
     environment:
@@ -17,14 +17,14 @@ services:
       - backend-runs:/app/runs
     command: uvicorn server:app --host 0.0.0.0 --port 8000 --reload
     networks:
-      - lepisai-network
+      - clinova-network
 
   # Frontend Service
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: lepisai-frontend
+    container_name: clinova-frontend
     ports:
       - "5173:5173"
     environment:
@@ -39,12 +39,12 @@ services:
     depends_on:
       - backend
     networks:
-      - lepisai-network
+      - clinova-network
 
 volumes:
   backend-runs:
     driver: local
 
 networks:
-  lepisai-network:
+  clinova-network:
     driver: bridge

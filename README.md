@@ -1,11 +1,11 @@
-# LepisAI - Virtual Clinical Trial Platform
+# Clinova - Virtual Clinical Trial Platform
 
 A full-stack application for conducting virtual clinical trials using AI agents to validate medical research hypotheses.
 
 ## Project Structure
 
 ```
-LepisAI/
+Clinova/
 ├── frontend/          # React + Vite web application
 ├── backend/           # FastAPI backend + Python AI agents
 ├── visualization/     # 3D WebGL visualization (Next.js)
@@ -50,7 +50,7 @@ LepisAI/
 1. **Clone the repository**
 ```bash
 git clone <repository-url>
-cd LepisAI
+cd Clinova
 ```
 
 2. **Set up environment variables**
