@@ -1,8 +1,8 @@
 #!/bin/bash
-# Quick start script for LepisAI
+# Quick start script for Clinova
 
 echo "=========================================="
-echo "LepisAI - Virtual Clinical Trial Platform"
+echo "Clinova - Virtual Clinical Trial Platform"
 echo "=========================================="
 echo ""
 
@@ -23,7 +23,7 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
-echo "🚀 Starting LepisAI services..."
+echo "🚀 Starting Clinova services..."
 echo ""
 
 # Start services
