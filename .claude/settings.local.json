@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(cd /Users/farhan/Documents/GitHub/Clinova/frontend && npm install)",
+      "Bash(cd /Users/farhan/Documents/GitHub/Clinova/backend && pip3 install -r requirements.txt 2>&1 | tail -20)",
+      "Bash(python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt 2>&1 | tail -10)",
+      "Bash(cd /Users/farhan/Documents/GitHub/Clinova/frontend && npm run dev)",
+      "Bash(source /Users/farhan/Documents/GitHub/Clinova/venv/bin/activate && python server.py)",
+      "Bash(/Users/farhan/Documents/GitHub/Clinova/backend/venv/bin/python server.py)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "Bash(./venv/bin/python server.py)"
     ]
   }
 }

@@ -1,0 +1,28 @@
+[     843ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:8080/node_modules/.vite/deps/react-router-dom.js?v=2ee6f1c8:4392
+[     843ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:8080/node_modules/.vite/deps/react-router-dom.js?v=2ee6f1c8:4392
+[ 3807284ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/api/examples:0
+[ 3807284ms] [ERROR] Failed to load example trial: TypeError: Failed to fetch
+    at getExampleTrials (http://localhost:8080/src/lib/api.ts:69:28)
+    at http://localhost:8080/src/pages/Canvas.tsx:340:36
+    at handleSubmit (http://localhost:8080/src/components/research/ResearchPrompt.tsx:32:13)
+    at HTMLUnknownElement.callCallback2 (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:3699:24)
+    at invokeGuardedCallback (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:3736:33)
+    at executeDispatch (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:7014:11)
+    at processDispatchQueueItemsInOrder (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:7034:15)
+    at processDispatchQueue (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:7043:13) @ http://localhost:8080/node_modules/.vite/deps/chunk-GK44UNVY.js?v=1c23808a:49454
+[ 3811105ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/api/examples:0
+[ 3811105ms] [ERROR] Failed to load example trial: TypeError: Failed to fetch
+    at getExampleTrials (http://localhost:8080/src/lib/api.ts:69:28)
+    at http://localhost:8080/src/pages/Canvas.tsx:340:36
+    at handleSubmit (http://localhost:8080/src/components/research/ResearchPrompt.tsx:32:13)
+    at HTMLUnknownElement.callCallback2 (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:3674:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:3699:24)
+    at invokeGuardedCallback (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:3736:33)
+    at executeDispatch (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:7014:11)
+    at processDispatchQueueItemsInOrder (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:7034:15)
+    at processDispatchQueue (http://localhost:8080/node_modules/.vite/deps/chunk-T2SWDQEL.js?v=1c23808a:7043:13) @ http://localhost:8080/node_modules/.vite/deps/chunk-GK44UNVY.js?v=1c23808a:49454
+[ 3812650ms] [WARNING] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition. @ http://localhost:8080/node_modules/.vite/deps/react-router-dom.js?v=2ee6f1c8:4392
+[ 3812650ms] [WARNING] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath. @ http://localhost:8080/node_modules/.vite/deps/react-router-dom.js?v=2ee6f1c8:4392
